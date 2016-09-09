@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://rechneronline.de/function-graphs/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Draw Function Graphs - Plotter</title>
+<meta name="description" content="Here graphs of numerous mathematical functions can be drawn, including their derivatives and integrals.">
+<meta name="robots" content="index,follow">
+<meta name="content-language" content="en">
+<script src="https://pagead2.googlesyndication.com/pub-config/r20160601/ca-pub-9435517763545530.js"></script><script src="./Draw Function Graphs - Plotter_files/script.js.download" type="text/javascript" async=""></script>
+<link rel="stylesheet" href="./Draw Function Graphs - Plotter_files/graph.css" type="text/css">
+<link rel="alternate" hreflang="de" href="https://rechneronline.de/funktionsgraphen/">
+<link rel="alternate" hreflang="en" href="https://rechneronline.de/function-graphs/">
+</head>
+<body onload="getgraph()">
+<script src="./Draw Function Graphs - Plotter_files/cookiechoices.js.download"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    cookieChoices.showCookieConsentBar('This website uses cookies that help us to provide our services. By using it, you agree to our use of cookies.',
+      'OK', 'Learn more', 'https://jumk.de/services/privacy.shtml');
+  });
+</script>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Function Graph Plotter Top -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-9435517763545530" data-ad-slot="1037372482" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><iframe width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./Draw Function Graphs - Plotter_files/saved_resource.html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br><div style="font-size:10px;margin-top:1px">Anzeige</div><br>
+<form id="funcs" method="post" action="https://rechneronline.de/function-graphs/function.php" target="function" autocomplete="off" onsubmit="checkscroll()">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody><tr>
+<td>
+
+<p>
+<a href="https://rechneronline.de/function-graphs/">Function Graphs</a> | <a href="https://rechneronline.de/function-graphs/imprint.shtml">Imprint &amp; Privacy</a><br>
+<a href="https://rechneronline.de/function-graphs/instructions.shtml">Instructions</a>
+<span style="cursor:pointer;font-weight:bold" onclick="hideins()" title="Hide instructions"> ← </span><span style="cursor:pointer;font-weight:bold" onclick="showins()" title="Show instructions"> → </span>
+<span style="text-decoration:line-through" title="Instructions frame size">
+<span style="cursor:pointer" id="slider0" onclick="changeinstrsize(0)">&nbsp; | </span>
+<span style="cursor:pointer" id="slider1" onclick="changeinstrsize(1)"> | </span>
+<span style="cursor:pointer" id="slider2" onclick="changeinstrsize(2)"> | </span>
+<span style="cursor:pointer" id="slider3" onclick="changeinstrsize(3)"> | </span>
+<span style="cursor:pointer" id="slider4" onclick="changeinstrsize(4)"> | </span>
+<span style="cursor:pointer" id="slider5" onclick="changeinstrsize(5)"> | </span>
+<span style="cursor:pointer" id="slider6" onclick="changeinstrsize(6)"> | </span>
+<span style="cursor:pointer" id="slider7" onclick="changeinstrsize(7)"> | </span>
+<span style="cursor:pointer" id="slider8" onclick="changeinstrsize(8)"> | </span>
+<span style="cursor:pointer" id="slider9" onclick="changeinstrsize(9)"> | </span>
+<span style="cursor:pointer" id="slider10" onclick="changeinstrsize(10)"> | </span>
+<span style="cursor:pointer" id="slider11" onclick="changeinstrsize(11)"> | </span>
+<span style="cursor:pointer" id="slider12" onclick="changeinstrsize(12)"> | </span>
+<span style="cursor:pointer" id="slider13" onclick="changeinstrsize(13)"> | </span>
+<span style="cursor:pointer" id="slider14" onclick="changeinstrsize(14)"> | </span>
+<span style="cursor:pointer" id="slider15" onclick="changeinstrsize(15)"> | </span>
+<span style="cursor:pointer" id="slider16" onclick="changeinstrsize(16)"> | </span>
+<span style="cursor:pointer" id="slider17" onclick="changeinstrsize(17)"> | </span>
+<span style="cursor:pointer" id="slider18" onclick="changeinstrsize(18)"> | </span>
+<span style="cursor:pointer;font-weight:bold;font-size:16px" id="slider19" onclick="changeinstrsize(19)"> | </span>
+<span style="cursor:pointer" id="slider20" onclick="changeinstrsize(20)"> | </span>
+<span style="cursor:pointer" id="slider21" onclick="changeinstrsize(21)"> | </span>
+<span style="cursor:pointer" id="slider22" onclick="changeinstrsize(22)"> | </span>
+<span style="cursor:pointer" id="slider23" onclick="changeinstrsize(23)"> | </span>
+<span style="cursor:pointer" id="slider24" onclick="changeinstrsize(24)"> | &nbsp;</span>
+</span>
+</p>
+
+<h1>Draw Function Graphs</h1>
+Mathematics / Analysis - Plotter - Calculator 3.1<br>
+
+<hr size="1" noshade="noshade">
+<table border="0" cellspacing="0" cellpadding="0" width="100%"><tbody><tr><td>
+<h2>Functions:</h2>
+</td><td>&nbsp;&nbsp;</td><td style="vertical-align:bottom;text-align:right">
+Hull: <input name="Y" id="Y" style="width:200px" value="Y">
+<input type="button" value=" C " onclick="document.getElementById(&#39;Y&#39;).value=&#39;Y&#39;;document.getElementById(&#39;Y&#39;).focus()">
+</td></tr></tbody></table>
+
+<hr size="1" noshade="noshade">
+<div style="background-color:#85bcef" class="function">
+<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td style="width:120px"><b>First graph: </b></td><td><input type="button" value=" C " onclick="document.getElementById(&#39;formula1&#39;).value=&#39;&#39;;document.getElementById(&#39;formula1&#39;).focus()"> <input type="radio" class="check" name="sint1" checked="checked" onclick="intclose(1)" value="0">&nbsp;f(x)&nbsp;&nbsp;<input type="radio" class="check" name="sint1" onclick="intclose(1)" value="1">&nbsp;Derivative&nbsp;&nbsp;<input type="radio" class="check" name="sint1" onclick="intshow(1)" value="2">&nbsp;Integral</td></tr></tbody></table>
+<input style="width:300px" id="formula1" name="formula1" value="x^2">
+<span style="display:none" id="intc1">
++C:<input id="cint1" name="cint1" style="width:50px">
+</span>
+<select id="col1" name="col1">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff" selected="selected">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select><br>
+From <input id="ta1" name="ta1" style="width:50px"> to <input id="ta2" name="ta2" style="width:50px">
+&nbsp;&nbsp;&nbsp;
+<select id="con0" name="con0">
+<option value="0" selected="selected">Connect</option>
+<option value="1">Dots</option>
+<option value="2">Fill in</option>
+<option value="3">Fill out</option>
+</select>&nbsp;&nbsp;&nbsp;
+<input type="checkbox" class="check" id="term1" name="term1" value="1" checked="checked"> Show term
+</div>
+
+<hr size="1" noshade="noshade">
+
+<div style="background-color:#cccccc" class="function">
+<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td style="width:120px"><b>Second graph:</b> </td><td><input type="button" value=" C " onclick="document.getElementById(&#39;formula2&#39;).value=&#39;&#39;;document.getElementById(&#39;formula2&#39;).focus()"> <input type="radio" class="check" name="sint2" checked="checked" onclick="intclose(2)" value="0">&nbsp;g(x)&nbsp;&nbsp;<input type="radio" class="check" name="sint2" onclick="intclose(2)" value="1">&nbsp;Derivative&nbsp;&nbsp;<input type="radio" class="check" name="sint2" onclick="intshow(2)" value="2">&nbsp;Integral</td></tr></tbody></table>
+<input style="width:300px" id="formula2" name="formula2" value="">
+<span style="display:none" id="intc2">
++C:<input id="cint2" name="cint2" style="width:50px">
+</span>
+<select id="col2" name="col2">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000" selected="selected">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select><br>
+From <input id="tb1" name="tb1" style="width:50px"> to <input id="tb2" name="tb2" style="width:50px">
+&nbsp;&nbsp;&nbsp;
+<select id="con1" name="con1">
+<option value="0" selected="selected">Connect</option>
+<option value="1">Dots</option>
+<option value="2">Fill in</option>
+<option value="3">Fill out</option>
+</select>&nbsp;&nbsp;&nbsp;
+<input type="checkbox" class="check" id="term2" name="term2" value="1" checked="checked"> Show term
+</div>
+
+<hr size="1" noshade="noshade">
+
+<div style="background-color:#eeeeee" class="function">
+<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td style="width:120px"><b>Third graph:</b> </td><td><input type="button" value=" C " onclick="document.getElementById(&#39;formula3&#39;).value=&#39;&#39;;document.getElementById(&#39;formula3&#39;).focus()"> <input type="radio" class="check" name="sint3" checked="checked" onclick="intclose(3)" value="0">&nbsp;h(x)&nbsp;&nbsp;<input type="radio" class="check" name="sint3" onclick="intclose(3)" value="1">&nbsp;Derivative&nbsp;&nbsp;<input type="radio" class="check" name="sint3" onclick="intshow(3)" value="2">&nbsp;Integral</td></tr></tbody></table>
+<input style="width:300px" id="formula3" name="formula3" value="">
+<span style="display:none" id="intc3">
++C:<input id="cint3" name="cint3" style="width:50px">
+</span>
+<select id="col3" name="col3">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400" selected="selected">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select><br>
+From <input id="tc1" name="tc1" style="width:50px"> to <input id="tc2" name="tc2" style="width:50px">
+&nbsp;&nbsp;&nbsp;
+<select id="con2" name="con2">
+<option value="0" selected="selected">Connect</option>
+<option value="1">Dots</option>
+<option value="2">Fill in</option>
+<option value="3">Fill out</option>
+</select>&nbsp;&nbsp;&nbsp;
+<input type="checkbox" class="check" id="term3" name="term3" value="1" checked="checked"> Show term
+</div>
+
+<hr size="1" noshade="noshade">
+
+<div style="text-align:center">
+<input type="hidden" name="c" value="2">
+<input type="submit" value="Draw" class="draw">
+<script type="text/javascript">
+document.write('<input type="button" value="Reset" class="reset" onclick="setback()"> ');
+document.write('<input type="button" class="reset" value="Standard" onclick="standard()" >');
+</script><input type="button" value="Reset" class="reset" onclick="setback()"> <input type="button" class="reset" value="Standard" onclick="standard()">
+<noscript>
+&lt;input type="reset" value="Reset" class="reset"&gt;
+</noscript>
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" style="width:397px;margin-top:2px"><tbody><tr>
+<td><h2>Display properties:</h2></td>
+<td style="text-align:right">
+Image type:
+<select id="filetype" name="filetype">
+<option value="0">png</option>
+<option value="1">gif</option>
+<option value="2">jpeg</option>
+</select>
+</td>
+</tr></tbody></table>
+
+
+<table border="0" cellspacing="0" cellpadding="1" style="width:397px;border:1px solid #eeeeee">
+<tbody><tr><td class="dtable">&nbsp;Width: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="width" name="width" value="500"> </td><td rowspan="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="dtable">&nbsp;Height: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="height" name="height" value="500"></td></tr>
+<tr><td class="dtable">&nbsp;Range x-axis from </td><td style="text-align:right" class="dtable"><input style="width:50px" id="rulex1" name="rulex1" value="-5"> </td><td class="dtable">&nbsp;to </td><td style="text-align:right" class="dtable"><input style="width:50px" id="rulex2" name="rulex2" value="5"></td></tr>
+<tr><td class="dtable">&nbsp;Range y-axis from </td><td style="text-align:right" class="dtable"><input style="width:50px" id="ruley1" name="ruley1" value="-5"> </td><td class="dtable">&nbsp;to </td><td style="text-align:right" class="dtable"><input style="width:50px" id="ruley2" name="ruley2" value="5"></td></tr>
+<tr><td class="dtable">&nbsp;Intervals x-axis: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="intervalsx" name="intervalsx" value="10"> </td><td class="dtable">&nbsp;y-axis: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="intervalsy" name="intervalsy" value="10"></td></tr>
+<tr><td class="dtable">&nbsp;Reticule lines: x-axis </td><td style="text-align:right" class="dtable"><input style="width:50px" id="gridx" name="gridx" value="20"> </td><td class="dtable">&nbsp;y-axis </td><td style="text-align:right" class="dtable"><input style="width:50px" id="gridy" name="gridy" value="20"></td></tr>
+<tr><td class="dtable">&nbsp;Dashes length: x-axis </td><td style="text-align:right" class="dtable"><input style="width:50px" id="linex" name="linex" value="5"> </td><td class="dtable">&nbsp;y-axis </td><td style="text-align:right" class="dtable"><input style="width:50px" id="liney" name="liney" value="5"></td></tr>
+<tr><td class="dtable">&nbsp;Decimal places: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="deci" name="deci" value="3" onchange="document.getElementById(&#39;decis&#39;).value=document.getElementById(&#39;deci&#39;).value"> </td><td class="dtable">&nbsp;Gap at origin: </td><td style="text-align:right" class="dtable"><input style="width:50px" id="mid" name="mid" value="0"></td></tr>
+<tr><td class="dtable">&nbsp;Graph thickness: </td><td style="text-align:right" class="dtable"><input name="thick" id="thick" style="width:50px" value="1"> </td><td class="dtable">&nbsp;</td><td style="text-align:right" class="dtable">&nbsp;</td></tr>
+<tr>
+<td colspan="4">
+&nbsp;Log. scale x:
+<input type="radio" class="check" name="logskx" onclick="document.getElementById(&#39;logskix&#39;).value=&#39;&#39;" checked="checked" value="0">No
+<input type="radio" class="check" name="logskx" onclick="document.getElementById(&#39;logskix&#39;).value=&#39;&#39;" value="2">2
+<input type="radio" class="check" name="logskx" onclick="document.getElementById(&#39;logskix&#39;).value=&#39;&#39;" value="M_E">e
+<input type="radio" class="check" name="logskx" onclick="document.getElementById(&#39;logskix&#39;).value=&#39;&#39;" value="10">10
+<input type="radio" class="check" name="logskx" onclick="document.getElementById(&#39;logskix&#39;).value=&#39;&#39;" value="100">100
+</td>
+<td style="text-align:right">or <input name="logskix" id="logskix" style="width:50px" onclick="clrlog(&#39;x&#39;)"></td>
+</tr>
+<tr>
+<td colspan="4" class="dtable">
+&nbsp;Log. scale y:
+<input type="radio" class="check" name="logsk" onclick="document.getElementById(&#39;logski&#39;).value=&#39;&#39;" checked="checked" value="0">No
+<input type="radio" class="check" name="logsk" onclick="document.getElementById(&#39;logski&#39;).value=&#39;&#39;" value="2">2
+<input type="radio" class="check" name="logsk" onclick="document.getElementById(&#39;logski&#39;).value=&#39;&#39;" value="M_E">e
+<input type="radio" class="check" name="logsk" onclick="document.getElementById(&#39;logski&#39;).value=&#39;&#39;" value="10">10
+<input type="radio" class="check" name="logsk" onclick="document.getElementById(&#39;logski&#39;).value=&#39;&#39;" value="100">100
+</td>
+<td style="text-align:right">or <input name="logski" id="logski" style="width:50px" onclick="clrlog(&#39;&#39;)"></td>
+</tr>
+
+</tbody></table>
+</td>
+
+<td style="width:3px;font-size:1px"> </td>
+
+<td style="text-align:center;vertical-align:middle">
+<script type="text/javascript">
+document.write('<iframe id="function" name="function" style="width:500px;height:500px" scrolling="no" frameborder="0">Function Graph</iframe>');
+</script><iframe id="function" name="function" style="width:500px;height:500px" scrolling="no" frameborder="0" src="./Draw Function Graphs - Plotter_files/saved_resource(1).html">Function Graph</iframe>
+<noscript>
+&lt;iframe id="function" name="function" src="function.php" style="width:500px;height:500px" scrolling="no" frameborder="0"&gt;Function Graph&lt;/iframe&gt;
+</noscript>
+<br>
+Quadrants:
+<input class="align" type="button" value="ⵜ" onclick="getalign(0)">
+&nbsp;
+<input class="align" type="button" value="⎿" onclick="getalign(&#39;a0&#39;)">
+<input class="align" type="button" value="⏌" onclick="getalign(&#39;a1&#39;)">
+<input class="align" type="button" value="⏋" onclick="getalign(&#39;a2&#39;)">
+<input class="align" type="button" value="⎾" onclick="getalign(&#39;a3&#39;)">
+&nbsp;
+<input class="align" type="button" value="⊥" onclick="getalign(&#39;b0&#39;)">
+<input class="align" type="button" value="⊣" onclick="getalign(&#39;b1&#39;)">
+<input class="align" type="button" value="⊤" onclick="getalign(&#39;b2&#39;)">
+<input class="align" type="button" value="⊢" onclick="getalign(&#39;b3&#39;)">
+&nbsp;
+Size: <input style="width:50px" id="qsize" value="5">
+</td>
+
+</tr>
+</tbody></table>
+
+<div class="width"><hr size="1" noshade="noshade"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="width">
+<tbody><tr><td>
+<input type="checkbox" class="check" id="grid" name="grid" value="1" checked="checked">&nbsp;Reticule lines <input type="checkbox" class="check" id="lines" name="lines" value="1" checked="checked">&nbsp;Axis lines <input type="checkbox" class="check" id="numbers" name="numbers" value="1" checked="checked">&nbsp;Caption <input type="checkbox" class="check" id="dashes" name="dashes" value="1" checked="checked">&nbsp;Dashes
+<input type="checkbox" class="check" id="frame" name="frame" value="1" checked="checked">&nbsp;Frame <input type="checkbox" class="check" id="errors" name="errors" value="1" checked="checked">&nbsp;Errors</td>
+<td style="text-align:right">&nbsp;Def. Q= <input id="qq" name="qq" style="width:260px" onchange="document.getElementById(&#39;qqsingle&#39;).value=document.getElementById(&#39;qq&#39;).value">&nbsp;
+<input type="button" value=" C " onclick="document.getElementById(&#39;qq&#39;).value=&#39;&#39;;document.getElementById(&#39;qq&#39;).focus()"></td>
+</tr></tbody></table>
+
+<table border="0" cellspacing="0" cellpadding="0" class="width" style="margin-top:1px">
+<tbody><tr><td>
+Background:
+<select id="bg" name="bg">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff" selected="selected">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select>
+Caption:
+<select id="capt" name="capt">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff" selected="selected">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select>
+Lines:
+<select id="linec" name="linec">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe" selected="selected">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select>
+Gap:
+<select id="gapc" name="gapc">
+<option value="0" style="background-color:#0000be;color:#ffffff">Blue 1</option>
+<option value="1" style="background-color:#0000ff;color:#ffffff">Blue 2</option>
+<option value="2" style="background-color:#6380ff">Blue 3</option>
+<option value="20" style="background-color:#6495ed">Blue 4</option>
+<option value="21" style="background-color:#b0c4de">Blue 5</option>
+<option value="37" style="background-color:#f0ffff">Blue 6</option>
+<option value="3" style="background-color:#be0000;color:#ffffff">Red 1</option>
+<option value="4" style="background-color:#ff0000">Red 2</option>
+<option value="29" style="background-color:#bc8f8f">Red 3</option>
+<option value="30" style="background-color:#f08080">Red 4</option>
+<option value="5" style="background-color:#bebe00">Yellow 1</option>
+<option value="6" style="background-color:#ffff00">Yellow 2</option>
+<option value="7" style="background-color:#005a00;color:#ffffff">Green 1</option>
+<option value="8" style="background-color:#00b400">Green 2</option>
+<option value="9" style="background-color:#00ff00">Green 3</option>
+<option value="22" style="background-color:#00ff7f">Green 4</option>
+<option value="23" style="background-color:#90ee90">Green 5</option>
+<option value="24" style="background-color:#808000">Green 6</option>
+<option value="13" style="background-color:#000000;color:#ffffff">Black</option>
+<option value="10" style="background-color:#505050;color:#ffffff">Grey 1</option>
+<option value="11" style="background-color:#7f7f7f">Grey 2</option>
+<option value="12" style="background-color:#bebebe">Grey 3</option>
+<option value="25" style="background-color:#dcdcdc">Grey 4</option>
+<option value="14" style="background-color:#ffffff" selected="selected">White</option>
+<option value="28" style="background-color:#ff4500">Orange</option>
+<option value="15" style="background-color:#41e2d5">Turquoise</option>
+<option value="16" style="background-color:#ee81ee">Violet 1</option>
+<option value="31" style="background-color:#4b0082;color:#ffffff">Violet 2</option>
+<option value="32" style="background-color:#ba55d3">Violet 3</option>
+<option value="33" style="background-color:#7b68ee">Violet 4</option>
+<option value="34" style="background-color:#ff00ff">Violet 5</option>
+<option value="35" style="background-color:#db7093">Violet 6</option>
+<option value="36" style="background-color:#dc143c">Violet 7</option>
+<option value="17" style="background-color:#830083;color:#ffffff">Purple</option>
+<option value="18" style="background-color:#a42829;color:#ffffff">Brown 1</option>
+<option value="26" style="background-color:#bdb76b">Brown 2</option>
+<option value="27" style="background-color:#8b4513;color:#ffffff">Brown 3</option>
+<option value="19" style="background-color:#00ffff">Cyan</option>
+<option value="38" style="background-color:#969696;color:#c0c0c0">Transp.</option>
+<option value="39" name="selfcols0" style="background-color: rgb(255, 255, 255);">Self 1</option>
+<option value="40" name="selfcols1" style="background-color: rgb(160, 176, 192);">Self 2</option>
+<option value="41" name="selfcols2" style="background-color: rgb(96, 128, 160);">Self 3</option>
+</select>
+<input type="checkbox" class="check" id="anti" name="anti" value="1" checked="checked">&nbsp;Antialiasing
+<input type="checkbox" class="check" id="pol" name="pol" value="1" checked="checked">&nbsp;Poles
+</td><td style="text-align:right">
+<select id="bf" name="bf">
+<option value="1">Lines in background</option>
+<option value="2">Lines in foreground</option>
+<option value="0">All lines off</option>
+</select>
+</td></tr></tbody></table>
+
+<table border="0" cellspacing="0" cellpadding="0" class="width" style="margin-top:1px">
+<tbody><tr><td>
+Gamma: <input id="gamma" name="gamma" style="width:40px" value="1">
+Brightness: <input id="bri" name="bri" style="width:40px" value="0">
+Contrast: <input id="cont" name="cont" style="width:40px" value="0">
+Rotation:  <input id="rotate" name="rotate" style="width:40px" value="0">°
+</td><td style="text-align:right">
+<input type="checkbox" class="check" id="emb" name="emb" value="1"> Emboss
+<input type="checkbox" class="check" id="blur" name="blur" value="1"> Blur
+<input type="checkbox" class="check" id="neg" name="neg" value="1"> Negative
+<input type="checkbox" class="check" id="gray" name="gray" value="1"> Greyscale
+<input type="checkbox" class="check" id="mean" name="mean" value="1"> Sketchy
+<input type="checkbox" class="check" id="edge" name="edge" value="1"> Edges only
+</td></tr></tbody></table>
+Self-defined color 1: #<input id="selfcol0" name="selfcol0" style="width:60px" value="ffffff" onchange="changeselfcol(0)"> <input style="width: 100px; border-width: 0px; background-color: rgb(255, 255, 255);" readonly="readonly" id="selfcolbg0">
+Self-defined color 2: #<input id="selfcol1" name="selfcol1" style="width:60px" value="a0b0c0" onchange="changeselfcol(1)"> <input style="width: 100px; border-width: 0px; background-color: rgb(160, 176, 192);" readonly="readonly" id="selfcolbg1">
+Self-defined color 3: #<input id="selfcol2" name="selfcol2" style="width:60px" value="6080a0" onchange="changeselfcol(2)"> <input style="width: 100px; border-width: 0px; background-color: rgb(96, 128, 160);" readonly="readonly" id="selfcolbg2">
+</form>
+
+<br>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Function Graph Plotter Adlinks -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:15px" data-ad-client="ca-pub-9435517763545530" data-ad-slot="7436023823" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><iframe width="728" height="15" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;" src="./Draw Function Graphs - Plotter_files/saved_resource(2).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br><div style="font-size:10px;margin-top:1px">Anzeige</div>
+<br><br>
+
+<div class="width"><hr size="1" noshade="noshade"></div>
+<form method="post" action="https://rechneronline.de/function-graphs/single.php" id="singleform" target="single" autocomplete="off" style="background-color:#dddddd;padding:5px 0px;margin:0px" class="width">
+<input type="hidden" name="decis" id="decis" value="3">
+<table border="0" cellspacing="0" cellpadding="0" class="width">
+<tbody><tr>
+<td><h2>Calculate single values: &nbsp;</h2>
+<p style="text-align:center">
+<input type="button" value=" 1 " onclick="document.getElementById(&#39;single1&#39;).value=document.getElementById(&#39;formula1&#39;).value;document.getElementById(&#39;inpval&#39;).focus()">
+<input type="button" value=" 2 " onclick="document.getElementById(&#39;single1&#39;).value=document.getElementById(&#39;formula2&#39;).value;document.getElementById(&#39;inpval&#39;).focus()">
+<input type="button" value=" 3 " onclick="document.getElementById(&#39;single1&#39;).value=document.getElementById(&#39;formula3&#39;).value;document.getElementById(&#39;inpval&#39;).focus()"> &nbsp;
+<input type="reset" value=" C " onclick="document.getElementById(&#39;single1&#39;).focus()"> &nbsp;
+<input type="button" value="+10" onclick="document.getElementById(&#39;inpval&#39;).value=&#39;1 2 3 4 5 6 7 8 9 10&#39;">
+<input type="button" value="-10" onclick="document.getElementById(&#39;inpval&#39;).value=&#39;-1 -2 -3 -4 -5 -6 -7 -8 -9 -10&#39;">
+<br><br>
+<input type="radio" class="check" name="format" value="0">Results
+<input type="radio" class="check" name="format" value="1" checked="checked">Table
+<input type="radio" class="check" name="format" value="2">CSV-format
+</p>
+</td>
+<td style="text-align:right;vertical-align:middle"><iframe name="single" src="./Draw Function Graphs - Plotter_files/single.html" style="width:650px;height:70px;border:1px solid #999999" scrolling="auto" frameborder="0">Result display</iframe> &nbsp;
+</td>
+</tr>
+</tbody></table>
+<input type="hidden" name="c" value="2">
+<input type="hidden" id="qqsingle" name="qqsingle" value="">
+<table border="0" cellspacing="0" cellpadding="0" class="width">
+<tbody><tr>
+<td style="vertical-align:middle">&nbsp; Function: <input style="width:320px" id="single1" name="single1" value=""></td>
+<td style="text-align:right;vertical-align:middle" title="Separate multiple values with spaces">Input value(s): <input style="width:300px" id="inpval" name="inpval" value="">
+<input type="submit" value=" Calculate " class="draw"> &nbsp;
+</td>
+</tr></tbody></table>
+</form>
+<div class="width"><hr size="1" noshade="noshade"></div>
+<br>
+
+<table border="0" cellspacing="0" cellpadding="0" class="width"><tbody><tr>
+<td><h2>Load &amp; Save:</h2></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>
+<input type="button" value=" Clear " class="reset" onclick="document.getElementById(&#39;path&#39;).value=&#39;&#39;;document.getElementById(&#39;path&#39;).focus()">
+<input type="button" value=" Select " class="reset" onclick="document.getElementById(&#39;path&#39;).focus();document.getElementById(&#39;path&#39;).select()">
+<input type="button" value=" Load Graph " class="draw" onclick="loadg()">
+</td>
+<td style="vertical-align:bottom;text-align:right">↙Path</td>
+</tr></tbody></table>
+<input id="path" class="width">
+
+<div class="width"><hr size="1" noshade="noshade"></div>
+<iframe style="display:none;position:absolute;left:925px;top:-1px;width:1050px;height:800px;border:1px solid #999999" frameborder="1" id="instructions" src="./Draw Function Graphs - Plotter_files/saved_resource(3).html"></iframe>
+<table class="width"><tbody><tr><td>Open source code: <a href="https://rechneronline.de/openPlaG/" style="font-size:12px;font-weight:normal">openPlaG</a> | <a href="https://rechneronline.de/f-gallery/" style="font-size:12px;font-weight:normal">Gallery</a></td>
+<td>Share:
+<a class="resp-sharing-button__link" href="https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Frechneronline.de%2Ffunction-graphs%2F" target="_blank" aria-label="">
+<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<g>
+<path d="M18.768,7.465H14.5V5.56c0-0.896,0.594-1.105,1.012-1.105s2.988,0,2.988,0V0.513L14.171,0.5C10.244,0.5,9.5,3.438,9.5,5.32 v2.145h-3v4h3c0,5.212,0,12,0,12h5c0,0,0-6.85,0-12h3.851L18.768,7.465z"></path>
+</g>
+</svg>
+</div>
+</div>
+</a>
+&nbsp;
+<a class="resp-sharing-button__link" href="https://twitter.com/intent/tweet/?url=https%3A%2F%2Frechneronline.de%2Ffunction-graphs%2F" target="_blank" aria-label="">
+<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<g>
+<path d="M23.444,4.834c-0.814,0.363-1.5,0.375-2.228,0.016c0.938-0.562,0.981-0.957,1.32-2.019c-0.878,0.521-1.851,0.9-2.886,1.104 C18.823,3.053,17.642,2.5,16.335,2.5c-2.51,0-4.544,2.036-4.544,4.544c0,0.356,0.04,0.703,0.117,1.036 C8.132,7.891,4.783,6.082,2.542,3.332C2.151,4.003,1.927,4.784,1.927,5.617c0,1.577,0.803,2.967,2.021,3.782 C3.203,9.375,2.503,9.171,1.891,8.831C1.89,8.85,1.89,8.868,1.89,8.888c0,2.202,1.566,4.038,3.646,4.456 c-0.666,0.181-1.368,0.209-2.053,0.079c0.579,1.804,2.257,3.118,4.245,3.155C5.783,18.102,3.372,18.737,1,18.459 C3.012,19.748,5.399,20.5,7.966,20.5c8.358,0,12.928-6.924,12.928-12.929c0-0.198-0.003-0.393-0.012-0.588 C21.769,6.343,22.835,5.746,23.444,4.834z"></path>
+</g>
+</svg>
+</div>
+</div>
+</a>
+&nbsp;
+<a class="resp-sharing-button__link" href="https://plus.google.com/share?url=https%3A%2F%2Frechneronline.de%2Ffunction-graphs%2F" target="_blank" aria-label="">
+<div class="resp-sharing-button resp-sharing-button--google resp-sharing-button--small"><div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<svg version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<g>
+<path d="M11.366,12.928c-0.729-0.516-1.393-1.273-1.404-1.505c0-0.425,0.038-0.627,0.988-1.368 c1.229-0.962,1.906-2.228,1.906-3.564c0-1.212-0.37-2.289-1.001-3.044h0.488c0.102,0,0.2-0.033,0.282-0.091l1.364-0.989 c0.169-0.121,0.24-0.338,0.176-0.536C14.102,1.635,13.918,1.5,13.709,1.5H7.608c-0.667,0-1.345,0.118-2.011,0.347 c-2.225,0.766-3.778,2.66-3.778,4.605c0,2.755,2.134,4.845,4.987,4.91c-0.056,0.22-0.084,0.434-0.084,0.645 c0,0.425,0.108,0.827,0.33,1.216c-0.026,0-0.051,0-0.079,0c-2.72,0-5.175,1.334-6.107,3.32C0.623,17.06,0.5,17.582,0.5,18.098 c0,0.501,0.129,0.984,0.382,1.438c0.585,1.046,1.843,1.861,3.544,2.289c0.877,0.223,1.82,0.335,2.8,0.335 c0.88,0,1.718-0.114,2.494-0.338c2.419-0.702,3.981-2.482,3.981-4.538C13.701,15.312,13.068,14.132,11.366,12.928z M3.66,17.443 c0-1.435,1.823-2.693,3.899-2.693h0.057c0.451,0.005,0.892,0.072,1.309,0.2c0.142,0.098,0.28,0.192,0.412,0.282 c0.962,0.656,1.597,1.088,1.774,1.783c0.041,0.175,0.063,0.35,0.063,0.519c0,1.787-1.333,2.693-3.961,2.693 C5.221,20.225,3.66,19.002,3.66,17.443z M5.551,3.89c0.324-0.371,0.75-0.566,1.227-0.566l0.055,0 c1.349,0.041,2.639,1.543,2.876,3.349c0.133,1.013-0.092,1.964-0.601,2.544C8.782,9.589,8.363,9.783,7.866,9.783H7.865H7.844 c-1.321-0.04-2.639-1.6-2.875-3.405C4.836,5.37,5.049,4.462,5.551,3.89z"></path>
+<polygon points="23.5,9.5 20.5,9.5 20.5,6.5 18.5,6.5 18.5,9.5 15.5,9.5 15.5,11.5 18.5,11.5 18.5,14.5 20.5,14.5 20.5,11.5  23.5,11.5 	"></polygon>
+</g>
+</svg>
+</div>
+</div>
+</a></td>
+</tr></tbody></table>
+<br>
+<div style="text-align:lef" class="width">
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Function graphs bottom -->
+<ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-9435517763545530" data-ad-slot="3064480888" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:900px;background-color:transparent"><ins id="aswift_2_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:900px;background-color:transparent"><iframe width="900" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;" src="./Draw Function Graphs - Plotter_files/saved_resource(4).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<br><div style="font-size:10px;margin-top:1px">Anzeige</div>
+</div>
+
+<div id="cookieChoiceInfo" style="position: fixed; width: 100%; background-color: rgb(238, 238, 238); margin: 0px; left: 0px; bottom: 0px; padding: 4px; z-index: 1000; text-align: center; border-top: 1px solid rgb(0, 0, 0);"><span>This website uses cookies that help us to provide our services. By using it, you agree to our use of cookies.</span><a href="https://jumk.de/services/privacy.shtml" target="_blank" style="margin-left: 8px;">Learn more</a><a id="cookieChoiceDismiss" href="https://rechneronline.de/function-graphs/#" style="margin-left: 24px;">OK</a></div></body></html>
