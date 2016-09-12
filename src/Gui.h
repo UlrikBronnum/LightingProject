@@ -168,6 +168,7 @@ public:
 	int			getHeight() { return height; }
 
 	void		setPosition(int x, int y);
+	ofVec2f		getPosition() { return position; }
 	
 	void		setDoPositionInDraw(bool updatePosition){ doPositionInDraw = updatePosition; }
 

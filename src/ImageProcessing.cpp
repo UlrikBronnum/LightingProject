@@ -1921,10 +1921,10 @@ void GPUProcessing::heightmap(ofTexture& base, ofTexture& invert, ofFbo& out_fbo
 	}
 
 	if (!out_fbo.isAllocated() ||
-		base.getWidth() != out_fbo.getWidth() ||
-		base.getHeight() != out_fbo.getHeight())
+		fboWidth != out_fbo.getWidth() ||
+		fboHeight != out_fbo.getHeight())
 	{
-		out_fbo.allocate(base.getWidth(), base.getHeight());
+		out_fbo.allocate(fboWidth, fboHeight, GL_RGBA);
 	}
 
 	if (shader.isLoaded()) {
@@ -1967,10 +1967,10 @@ void GPUProcessing::n2h(ofTexture& base, ofFbo& out_fbo, int fboWidth, int fboHe
 	}
 
 	if (!out_fbo.isAllocated() ||
-		base.getWidth() != out_fbo.getWidth() ||
-		base.getHeight() != out_fbo.getHeight())
+		fboWidth != out_fbo.getWidth() ||
+		fboHeight != out_fbo.getHeight())
 	{
-		out_fbo.allocate(base.getWidth(), base.getHeight());
+		out_fbo.allocate(fboWidth, fboHeight, GL_RGBA);
 	}
 
 	if (shader.isLoaded()) {
@@ -2002,10 +2002,10 @@ void GPUProcessing::highpass(ofTexture& base, ofFbo& out_fbo, int fboWidth, int 
 	}
 
 	if (!out_fbo.isAllocated() ||
-		base.getWidth() != out_fbo.getWidth() ||
-		base.getHeight() != out_fbo.getHeight())
+		fboWidth != out_fbo.getWidth() ||
+		fboHeight != out_fbo.getHeight())
 	{
-		out_fbo.allocate(base.getWidth(), base.getHeight());
+		out_fbo.allocate(fboWidth, fboHeight, GL_RGBA);
 	}
 
 	if (shader.isLoaded()) {
@@ -2020,6 +2020,42 @@ void GPUProcessing::highpass(ofTexture& base, ofFbo& out_fbo, int fboWidth, int 
 
 		shader.setUniform1i("radius", radius);
 
+		out_fbo.draw(0, 0);
+
+		shader.end();
+
+		out_fbo.end();
+	}
+}
+
+
+void GPUProcessing::blends(ofTexture& target, ofTexture& blend, ofFbo& out_fbo, int fboWidth, int fboHeight, int blendMode)
+{
+	ofShader    shader;
+
+	if (ofGetUsingArbTex()) {
+		shader.load("res/shaders/defaultVertex.vert", "res/shaders/filters/blendsNArb.frag");
+	}
+	else {
+		shader.load("res/shaders/defaultVertex.vert", "res/shaders/filters/blendsNArb.frag");
+	}
+
+	if (!out_fbo.isAllocated() ||
+		fboWidth != out_fbo.getWidth() ||
+		fboHeight != out_fbo.getHeight())
+	{
+		out_fbo.allocate(fboWidth, fboHeight, GL_RGBA);
+	}
+
+	if (shader.isLoaded()) {
+		out_fbo.begin();
+		ofClear(0, 0, 0, 255);
+		shader.begin();
+
+		// Pass the video texture
+		shader.setUniformTexture("tex0", target, 1);
+		shader.setUniformTexture("tex1", blend, 2);
+		shader.setUniform1i("blendMode",blendMode);
 		out_fbo.draw(0, 0);
 
 		shader.end();

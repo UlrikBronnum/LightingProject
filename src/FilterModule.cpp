@@ -29,11 +29,15 @@ void FilterModule::setReference(ofTexture& base)
 void FilterModuleGPU::setReference(ofImage& base)
 {
 	referenceTexture = base.getTexture();
+	fbo.allocate(referenceTexture.getWidth(), referenceTexture.getHeight(), GL_RGB);
+	//setTextureSettings();
 }
 
 void FilterModuleGPU::setReference(ofTexture& base)
 {
 	referenceTexture = base;
+	fbo.allocate(referenceTexture.getWidth(), referenceTexture.getHeight(), GL_RGB);
+	//setTextureSettings();
 }
 void FilterModuleGPU::drawPixels(int x, int y, int w, int h)
 {
@@ -42,9 +46,35 @@ void FilterModuleGPU::drawPixels(int x, int y, int w, int h)
 }
 ofImage* FilterModuleGPU::getImage()
 {
-	//fbo.readToPixels( image.getPixelsRef() );
 	image.getTexture() = fbo.getTexture();
 	return &image;
+}
+void FilterModuleGPU::setTextureSettings()
+{
+	if (ofGetUsingArbTex())
+	{
+		referenceTexture.setTextureWrap(GL_CLAMP, GL_CLAMP);
+		referenceTexture.enableMipmap();
+		referenceTexture.generateMipmap();
+		referenceTexture.setTextureMinMagFilter(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR);
+
+		fbo.getTexture().setTextureWrap(GL_CLAMP, GL_CLAMP);
+		fbo.getTexture().enableMipmap();
+		fbo.getTexture().generateMipmap();
+		fbo.getTexture().setTextureMinMagFilter(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR);
+	}
+	else 
+	{
+		referenceTexture.setTextureWrap(GL_REPEAT, GL_REPEAT);
+		referenceTexture.enableMipmap();
+		referenceTexture.generateMipmap();
+		referenceTexture.setTextureMinMagFilter(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR);
+
+		fbo.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+		fbo.getTexture().enableMipmap();
+		fbo.getTexture().generateMipmap();
+		fbo.getTexture().setTextureMinMagFilter(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR);
+	}
 }
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
@@ -61,15 +91,21 @@ void Blur::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, i
 	box.setState(true);
 
 	
-	kernelState = 0;
+	kernelState = -1;
 	radiusValue = radius.getValue();
 
 	inputGui.setEventEnabled(true);
+
+	hasChanged = true;
 }
 void Blur::apply()
 {
 	setKernel();
-	GPUProcessing::blur(referenceTexture, fbo, 1024, 1024, kernel);
+	if (hasChanged) 
+	{
+		GPUProcessing::blur(referenceTexture, fbo, 1024, 1024, kernel);
+		hasChanged = false;
+	}
 }
 void Blur::setKernel()
 {
@@ -82,6 +118,7 @@ void Blur::setKernel()
 			inputGui.eraseLastElement();
 
 		kernelState = 0;
+		hasChanged = true;
 	}
 	else if(kernelState != 1 && disc.getState())
 	{
@@ -92,7 +129,7 @@ void Blur::setKernel()
 			inputGui.eraseLastElement();
 
 		kernelState = 1;
-
+		hasChanged = true;
 	}
 	else if (kernelState != 2 && gaussian.getState())
 	{
@@ -101,35 +138,40 @@ void Blur::setKernel()
 		
 		kernelState = 2;
 
-		inputGui.addGuiFloat(sigma, "Sigma", inputGui.getWidth(), inputGui.getHeight(), 0.1, 2.0, 0.01);
+		inputGui.addGuiFloat(sigma, "Sigma", inputGui.getWidth(), inputGui.getHeight(), 0.1, 5.0, 0.01);
+		hasChanged = true;
 	}
 	reloadKernel();
 }
 void Blur::reloadKernel()
 {
-	bool radiusHasChanged = false;
 	int newRadius = radius.getValue();
 	if (newRadius != radiusValue)
 	{
 		radiusValue = newRadius;
-		radiusHasChanged = true;
 		kernel.setSize(radiusValue * 2 + 1);
+		hasChanged = true;
 	}
-	if (kernelState == 2) 
+	
+	if (kernelState == 0 && hasChanged)
 	{
-		sigmaValue = sigma.getValue();
-		kernel.gaussianKernel(sigmaValue);
+		kernel.boxKernel();
 	}
-	else {
-		if (kernelState == 0)
+	else if (kernelState == 1 && hasChanged)
+	{
+		kernel.discKernel();
+	}
+	else if (kernelState == 2)
+	{
+		float tmpSigma = sigma.getValue();
+		if (tmpSigma != sigmaValue || hasChanged)
 		{
-			kernel.boxKernel();
-		}
-		else 
-		{
-			kernel.discKernel();
+			sigmaValue = tmpSigma;
+			hasChanged = true;
+			kernel.gaussianKernel(sigmaValue);
 		}
 	}
+	
 }
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
@@ -138,7 +180,7 @@ void Blur::reloadKernel()
 void MinMax::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, int height)
 {
 	FilterModule::setup(style, font, fontColor, width, height);
-	inputGui.setLabel("Blur");
+	inputGui.setLabel("Min / Max");
 	inputGui.addGuiButton(getMin, "Min or Max", width, height);
 	inputGui.addGuiButton(box, "Box", width, height);
 	inputGui.addGuiButton(disc, "Disc", width, height);
@@ -146,15 +188,31 @@ void MinMax::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width,
 	inputGui.addGuiInt(radius, "Radius", width, height, 1, 25, 1);
 	box.setState(true);
 
-	kernelState = 0;
+	kernelState = -1;
 	radiusValue = radius.getValue();
 
 	inputGui.setEventEnabled(true);
+
+	hasChanged = true;
+	
+	doMax = true;
 }
 void MinMax::apply()
 {
 	setKernel();
-	GPUProcessing::minMax(referenceTexture, fbo, 1024, 1024, kernel, getMin.getValue());
+
+	bool tmp = getMin.getValue();
+	if (doMax != tmp) 
+	{
+		doMax = tmp;
+		hasChanged = true;
+	}
+
+	if (hasChanged) 
+	{
+		GPUProcessing::minMax(referenceTexture, fbo, 1024, 1024, kernel, doMax);
+		hasChanged = false;
+	}
 }
 void MinMax::setKernel()
 {
@@ -164,6 +222,7 @@ void MinMax::setKernel()
 		cross.setState(false);
 
 		kernelState = 0;
+		hasChanged = true;
 	}
 	else if (kernelState != 1 && disc.getState())
 	{
@@ -171,6 +230,7 @@ void MinMax::setKernel()
 		cross.setState(false);
 
 		kernelState = 1;
+		hasChanged = true;
 	}
 	else if (kernelState != 2 && cross.getState())
 	{
@@ -178,33 +238,63 @@ void MinMax::setKernel()
 		disc.setState(false);
 
 		kernelState = 2;
+		hasChanged = true;
 	}
 	reloadKernel();
 }
 void MinMax::reloadKernel()
 {
-	bool radiusHasChanged = false;
 	int newRadius = radius.getValue();
 	if (newRadius != radiusValue)
 	{
 		radiusValue = newRadius;
-		radiusHasChanged = true;
 		kernel.setSize(radiusValue * 2 + 1);
+		hasChanged = true;
 	}
-	if (kernelState == 0)
+	if (kernelState == 0 && hasChanged)
 	{
 		kernel.boxKernelBinary();
 	}
-	else if (kernelState == 1)
+	else if (kernelState == 1 && hasChanged)
 	{
 		kernel.discKernelBinary();
 	}
-	else
+	else if (kernelState == 2 && hasChanged)
 	{
 		kernel.crossKernelBinary();
 	}
-	
 }
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+void Highpass::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, int height)
+{
+	FilterModule::setup(style, font, fontColor, width, height);
+	inputGui.setLabel("Modifiers");
+	inputGui.addGuiInt(gRadius, "Radius", width, height, 1, 45, 1);
+
+	inputGui.setEventEnabled(true);
+
+	vRadius = -1.0;
+
+	hasChanged = true;
+}
+void Highpass::apply()
+{
+	float tmpRadius = gRadius.getValue();
+	if (vRadius != tmpRadius)
+	{
+		vRadius = tmpRadius;
+		hasChanged = true;
+	}
+	if (hasChanged)
+	{
+		GPUProcessing::highpass(referenceTexture, fbo, 1024, 1024, vRadius);
+		hasChanged = false;
+	}
+
+}
+
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
@@ -224,18 +314,40 @@ void Morph::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, 
 	radiusValue = radius.getValue();
 
 	inputGui.setEventEnabled(true);
+
+	hasChanged = true;
+
 }
 void Morph::apply()
 {
 	setKernel();
+
 	int tmpValue = 0;
-	if (doDilation.getValue()) {
+	if (doDilation.getValue()) 
+	{
 		tmpValue = 1;
+		if(!doADilation)
+		{
+			doADilation = true;
+			hasChanged = true;
+		}
 	}
-	else {
+	else 
+	{
 		tmpValue = kernelSum;
+		if (doADilation) 
+		{
+			doADilation = false;
+			hasChanged = true;
+		}
 	}
-	GPUProcessing::morph(referenceTexture, fbo, 1024, 1024, kernel,tmpValue);
+
+	if (hasChanged) 
+	{
+		GPUProcessing::morph(referenceTexture, fbo, 1024, 1024, kernel, tmpValue);
+		hasChanged = false;
+		cout << "running" << endl;
+	}
 }
 void Morph::setKernel()
 {
@@ -245,6 +357,7 @@ void Morph::setKernel()
 		cross.setState(false);
 
 		kernelState = 0;
+		hasChanged = true;
 	}
 	else if (kernelState != 1 && disc.getState())
 	{
@@ -252,6 +365,7 @@ void Morph::setKernel()
 		cross.setState(false);
 
 		kernelState = 1;
+		hasChanged = true;
 	}
 	else if (kernelState != 2 && cross.getState())
 	{
@@ -259,32 +373,34 @@ void Morph::setKernel()
 		disc.setState(false);
 
 		kernelState = 2;
+		hasChanged = true;
 	}
 	reloadKernel();
 }
 void Morph::reloadKernel()
 {
-	bool radiusHasChanged = false;
 	int newRadius = radius.getValue();
 	if (newRadius != radiusValue)
 	{
 		radiusValue = newRadius;
-		radiusHasChanged = true;
 		kernel.setSize(radiusValue * 2 + 1);
+		hasChanged = true;
 	}
-	if (kernelState == 0)
+	if (kernelState == 0 && hasChanged)
 	{
 		kernelSum = kernel.boxKernelBinary();
+		hasChanged = true;
 	}
-	else if (kernelState == 1)
+	else if (kernelState == 1 && hasChanged)
 	{
 		kernelSum = kernel.discKernelBinary();
+		hasChanged = true;
 	}
-	else
+	else if(kernelState == 2 && hasChanged)
 	{
 		kernelSum = kernel.crossKernelBinary();
+		hasChanged = true;
 	}
-
 }
 
 //-----------------------------------------------------------------
@@ -315,6 +431,10 @@ void Edge::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, i
 	output = (EdgeOutput)1;
 	
 	outputControl.setEventEnabled(true);
+
+	hasChanged = true;
+
+	thresholdSum = -1.0;
 }
 void Edge::apply()
 {
@@ -322,22 +442,32 @@ void Edge::apply()
 	setOutput();
 
 	float value = thresholdValue.getValue();
-	switch (kernelState)
+	if (value != thresholdSum)
 	{
-	case 0:
-		GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, prewitt_horizontal, prewitt_vertical, prewitt_diagonal, output, value);
-		break;
-	case 1:
-		GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, sobel_horizontal, sobel_vertical, sobel_diagonal, output, value);
-		break;
-	case 2:
-		GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, kirsch_horizontal, kirsch_vertical, kirsch_diagonal, output, value);
-		break;
-	case 3:
-		GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, scharr_horizontal, scharr_vertical, scharr_diagonal, output, value);
-		break;
-	default:
-		break;
+		thresholdSum = value;
+		hasChanged = true;
+	}
+	if (hasChanged)
+	{
+		switch (kernelState)
+		{
+		case 0:
+			GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, prewitt_horizontal, prewitt_vertical, prewitt_diagonal, output, thresholdSum);
+			break;
+		case 1:
+			GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, sobel_horizontal, sobel_vertical, sobel_diagonal, output, thresholdSum);
+			break;
+		case 2:
+			GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, kirsch_horizontal, kirsch_vertical, kirsch_diagonal, output, thresholdSum);
+			break;
+		case 3:
+			GPUProcessing::edge(referenceTexture, fbo, 1024, 1024, scharr_horizontal, scharr_vertical, scharr_diagonal, output, thresholdSum);
+			break;
+		default:
+			break;
+		}
+		hasChanged = false;
+		cout << "running" << endl;
 	}
 }
 void Edge::setKernel()
@@ -349,6 +479,7 @@ void Edge::setKernel()
 		scharr.setState(false);
 
 		kernelState = 0;
+		hasChanged = true;
 	}
 	else if (kernelState != 1 && sobel.getState())
 	{
@@ -357,7 +488,7 @@ void Edge::setKernel()
 		scharr.setState(false);
 
 		kernelState = 1;
-
+		hasChanged = true;
 	}
 	else if (kernelState != 2 && kirsch.getState())
 	{
@@ -366,7 +497,7 @@ void Edge::setKernel()
 		scharr.setState(false);
 
 		kernelState = 2;
-
+		hasChanged = true;
 	}
 	else if (kernelState != 3 && scharr.getState())
 	{
@@ -375,6 +506,7 @@ void Edge::setKernel()
 		kirsch.setState(false);
 
 		kernelState = 3;
+		hasChanged = true;
 	}
 }
 void Edge::setOutput()
@@ -391,6 +523,7 @@ void Edge::setOutput()
 		}
 
 		output = (EdgeOutput)0;
+		hasChanged = true;
 	}
 	else if (output != 1 && difference.getState())
 	{
@@ -403,7 +536,7 @@ void Edge::setOutput()
 			outputControl.eraseLastElement();
 
 		output = (EdgeOutput)1;
-
+		hasChanged = true;
 	}
 	else if (output != 2 && magnitude.getState())
 	{
@@ -416,7 +549,7 @@ void Edge::setOutput()
 			outputControl.eraseLastElement();
 
 		output = (EdgeOutput)2;
-
+		hasChanged = true;
 	}
 	else if (output != 3 && normalized.getState())
 	{
@@ -429,6 +562,7 @@ void Edge::setOutput()
 			outputControl.eraseLastElement();
 
 		output = (EdgeOutput)3;
+		hasChanged = true;
 	}
 	else if (output != 4 && absolute.getState())
 	{
@@ -441,6 +575,7 @@ void Edge::setOutput()
 			outputControl.eraseLastElement();
 
 		output = (EdgeOutput)4;
+		hasChanged = true;
 	}
 }
 void Edge::drawMenu(int x, int y)
@@ -464,36 +599,51 @@ void Normalmap::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int wid
 	inputGui.addGuiFloat(roughness, "Roughness", width, height,0.0,2.0,0.01);
 	roughness.setValue(1.0);
 	prewitt.setState(true);
-
+	kernelState = -1;
 	inputGui.setEventEnabled(true);
+
+	vRoughness = 0.0f;
+	hasChanged = true;
 }
 void Normalmap::apply()
 {
 	setKernel();
-	switch (kernelState)
+
+	float tmpRoughness = roughness.getValue();
+	if (vRoughness != tmpRoughness)
 	{
-	case 0:
-		GPUProcessing::normalmap(	referenceTexture, fbo, 1024, 1024, 
-									prewitt_horizontal, prewitt_vertical, 
-									roughness.getValue(), ofVec3f(1.0, 0.0, 0.0));
-		break;
-	case 1:
-		GPUProcessing::normalmap(	referenceTexture, fbo, 1024, 1024,		
-									sobel_horizontal, sobel_vertical, 
-									roughness.getValue(), ofVec3f(1.0, 0.0, 0.0));
-		break;
-	case 2:
-		GPUProcessing::normalmap(	referenceTexture, fbo, 1024, 1024, 
-									kirsch_horizontal, kirsch_vertical, 
-									roughness.getValue(), ofVec3f(1.0, 0.0, 0.0));
-		break;
-	case 3:
-		GPUProcessing::normalmap(	referenceTexture, fbo, 1024, 1024, 
-									scharr_horizontal, scharr_vertical, 
-									roughness.getValue(), ofVec3f(1.0, 0.0, 0.0));
-		break;
-	default:
-		break;
+		vRoughness = tmpRoughness;
+		hasChanged = true;
+	}
+
+	if (hasChanged) 
+	{
+		switch (kernelState)
+		{
+		case 0:
+			GPUProcessing::normalmap(referenceTexture, fbo, 1024, 1024,
+				prewitt_horizontal, prewitt_vertical,
+				vRoughness, ofVec3f(1.0, 0.0, 0.0));
+			break;
+		case 1:
+			GPUProcessing::normalmap(referenceTexture, fbo, 1024, 1024,
+				sobel_horizontal, sobel_vertical,
+				vRoughness, ofVec3f(1.0, 0.0, 0.0));
+			break;
+		case 2:
+			GPUProcessing::normalmap(referenceTexture, fbo, 1024, 1024,
+				kirsch_horizontal, kirsch_vertical,
+				vRoughness, ofVec3f(1.0, 0.0, 0.0));
+			break;
+		case 3:
+			GPUProcessing::normalmap(referenceTexture, fbo, 1024, 1024,
+				scharr_horizontal, scharr_vertical,
+				vRoughness, ofVec3f(1.0, 0.0, 0.0));
+			break;
+		default:
+			break;
+		}
+		hasChanged = false;
 	}
 }
 void Normalmap::setKernel()
@@ -505,6 +655,7 @@ void Normalmap::setKernel()
 		scharr.setState(false);
 
 		kernelState = 0;
+		hasChanged = true;
 	}
 	else if (kernelState != 1 && sobel.getState())
 	{
@@ -513,7 +664,7 @@ void Normalmap::setKernel()
 		scharr.setState(false);
 
 		kernelState = 1;
-
+		hasChanged = true;
 	}
 	else if (kernelState != 2 && kirsch.getState())
 	{
@@ -522,7 +673,7 @@ void Normalmap::setKernel()
 		scharr.setState(false);
 
 		kernelState = 2;
-
+		hasChanged = true;
 	}
 	else if (kernelState != 3 && scharr.getState())
 	{
@@ -531,6 +682,7 @@ void Normalmap::setKernel()
 		kirsch.setState(false);
 
 		kernelState = 3;
+		hasChanged = true;
 	}
 }
 //-----------------------------------------------------------------
@@ -544,10 +696,25 @@ void Gamma::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, 
 	gamma.setValue(1.0);
 
 	inputGui.setEventEnabled(true);
+
+	gammaValue = -1.0;
+
+	hasChanged = true;
 }
 void Gamma::apply()
 {
-	GPUProcessing::gamma(referenceTexture, fbo, 1024, 1024, gamma.getValue());
+	float tmpGamma = gamma.getValue();
+	if (gammaValue != tmpGamma)
+	{
+		gammaValue = tmpGamma;
+		hasChanged = true;
+	}
+	if (hasChanged) 
+	{
+		GPUProcessing::gamma(referenceTexture, fbo, 1024, 1024, gammaValue);
+		hasChanged = false;
+	}
+	
 }
 
 //-----------------------------------------------------------------
@@ -564,10 +731,32 @@ void BrightnessContrast::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor
 	contrast.setValue(0);
 
 	inputGui.setEventEnabled(true);
+
+	brightnessValue = -1;
+	contrastValue = -1;
+
+	hasChanged = true;
 }
 void BrightnessContrast::apply()
 {
-	GPUProcessing::brightCont(referenceTexture, fbo, 1024, 1024, brightness.getValue(),contrast.getValue());
+	float tmpBrightness = brightness.getValue();
+	if (brightnessValue != tmpBrightness)
+	{
+		brightnessValue = tmpBrightness;
+		hasChanged = true;
+	}
+	float tmpContrast = contrast.getValue();
+	if (contrastValue != tmpContrast)
+	{
+		contrastValue = tmpContrast;
+		hasChanged = true;
+	}
+	if (hasChanged) 
+	{
+		GPUProcessing::brightCont(referenceTexture, fbo, 1024, 1024, brightnessValue, contrastValue);
+		hasChanged = false;
+	}
+	
 }
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
@@ -578,10 +767,16 @@ void Invert::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width,
 	inputGui.setLabel("Modifiers");
 	
 	inputGui.setEventEnabled(true);
+	
+	hasChanged = true;
 }
 void Invert::apply()
 {
-	GPUProcessing::invert(referenceTexture, fbo, 1024, 1024);
+	if (hasChanged)
+	{
+		GPUProcessing::invert(referenceTexture, fbo, 1024, 1024);
+		hasChanged = false;
+	}
 }
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------
@@ -616,7 +811,6 @@ void Threshold::apply()
 	if (hasChanged) {
 		GPUProcessing::threshold(referenceTexture, fbo, 1024, 1024, thresholdMax, thresholdMin);
 		hasChanged = false;
-		cout << "threshold" << endl;
 	}
 }
 void Threshold::setValue()
@@ -658,10 +852,206 @@ void HSLCorrection::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int
 	luminance.setValue(0);
 
 	inputGui.setEventEnabled(true);
+
+	hasChanged = true;
+
+	hueValue = -1.0;
+	saturationValue = -1.0;
+	luminaceValue = -1.0;
 }
 void HSLCorrection::apply()
 {
-	GPUProcessing::hslCorrection(referenceTexture, fbo, 1024, 1024, hue.getValue(), saturation.getValue() , luminance.getValue());
+	float tmpHue = hue.getValue();
+	if (hueValue != tmpHue)
+	{
+		hueValue = tmpHue;
+		hasChanged = true;
+	}
+
+	float tmpSaturation = saturation.getValue();
+	if (saturationValue != tmpSaturation)
+	{
+		saturationValue = tmpSaturation;
+		hasChanged = true;
+	}
+
+	float tmpLuminace = luminance.getValue();
+	if (luminaceValue != tmpLuminace)
+	{
+		luminaceValue = tmpLuminace;
+		hasChanged = true;
+	}
+
+	if(hasChanged)
+	{
+		GPUProcessing::hslCorrection(referenceTexture, fbo, 1024, 1024, hue.getValue(), saturation.getValue(), luminance.getValue());
+		hasChanged = false;
+	}
+}
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+void Blends::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, int height)
+{
+	FilterModule::setup(style, font, fontColor, width, height);
+	inputGui.setLabel("Modifiers");
+	inputGui.addGuiButton("Darken", width, height);
+	inputGui.addGuiButton("Lighten", width, height);
+	inputGui.addGuiButton("Multiply", width, height);
+	inputGui.addGuiButton("Burn", width, height);
+	inputGui.addGuiButton("Linear Burn", width, height);
+	inputGui.addGuiButton("Screen", width, height);
+	inputGui.addGuiButton("Color Dodge", width, height);
+	inputGui.addGuiButton("Linear Dodge", width, height);
+	inputGui.addGuiButton("Difference", width, height);
+	inputGui.addGuiButton("Exclusion", width, height);
+	inputGui.addGuiButton("Subtract", width, height);
+
+	inputGui.setElementState(0, true);
+	inputGui.setEventEnabled(true);
+	activeInput = 0;
+
+
+	selectionMenu.setup(style, font, fontColor, "", height, 1);
+	selectionMenu.setEventEnabled(true);
+
+	textureSelect.setup(style, font, fontColor, "", width, 1);
+	textureSelect.addGuiButton(gTarget, "Target", width, height);
+	textureSelect.addGuiButton(gBlend, "Blend", width, height);
+
+	textureSelect.setEventEnabled(true);
+
+	hasChanged = true;
+}
+void Blends::apply()
+{
+	updateSelectionMenu();
+	setInput();
+
+	if (hasChanged)
+	{
+		if(target.isAllocated() && blend.isAllocated())
+			GPUProcessing::blends(target, blend, fbo, 1024, 1024, activeInput);
+		hasChanged = false;
+	}
+}
+void Blends::drawSelector(int x, int y)
+{
+	if (activeSelect != -1)
+	{
+		ofVec2f pos = selectionMenu.getElementPosition(activeSelect);
+		if (pos.y + textureSelect.getSize().y > ofGetWindowHeight())
+		{
+			textureSelect.draw(pos.x - textureSelect.getSize().x,
+								ofGetWindowHeight() - textureSelect.getSize().y);
+		}
+		else
+		{
+			textureSelect.draw(pos.x - textureSelect.getSize().x, pos.y - 1);
+		}
+	}
+	
+	selectionMenu.draw(x, y);
+}
+void Blends::setReferencesPossibilities(vector<FilterModule*> references)
+{
+	this->references = references;
+	TextAlignment	alignment;
+	alignment.h = hCENTER;
+	alignment.v = vCENTER;
+
+	for (int i = 0; i < this->references.size() + 1; i++)
+	{
+		selectionMenu.addGuiButton("", selectionMenu.getWidth(), selectionMenu.getWidth(), alignment);
+	}
+}
+void Blends::setInput()
+{
+	int tmp = -1;
+
+	for (int i = 0; i < inputGui.getNumElements(); i++)
+	{
+		if (inputGui.getElementState(i) && activeInput != i)
+		{
+			tmp = i;
+		}
+	}
+	if (tmp != -1 )
+	{
+		inputGui.setElementState(activeInput, false);
+		activeInput = tmp;
+		hasChanged = true;
+	}
+	
+}
+void Blends::updateSelectionMenu()
+{
+	if (activeSelect != -1)
+	{
+		if (gTarget.getState())
+		{
+			for (int i = 0; i < selectionMenu.getNumElements(); i++)
+			{
+				if (selectionMenu.getElementLabel(i) == "t")
+				{
+					selectionMenu.setElementLabel(i, "");
+				}
+			}
+			if (activeSelect == references.size())
+			{
+				selectionMenu.setElementLabel(activeSelect, "t");
+				target = referenceTexture;
+			}
+			else
+			{
+				selectionMenu.setElementLabel(activeSelect, "t");
+				target = references[activeSelect]->getImage()->getTexture();
+			}
+			gTarget.setState(false);
+			selectionMenu.setElementState(activeSelect, false);
+			activeSelect = -1;
+			hasChanged = true;
+		}
+		else if (gBlend.getState())
+		{
+			for (int i = 0; i < selectionMenu.getNumElements(); i++)
+			{
+				if (selectionMenu.getElementLabel(i) == "b")
+				{
+					selectionMenu.setElementLabel(i, "");
+				}
+			}
+			if (activeSelect == references.size())
+			{
+				selectionMenu.setElementLabel(activeSelect, "b");
+				blend = referenceTexture;
+			}
+			else
+			{
+				selectionMenu.setElementLabel(activeSelect, "b");
+				blend = references[activeSelect]->getImage()->getTexture();
+			}
+			gBlend.setState(false);
+			selectionMenu.setElementState(activeSelect, false);
+			activeSelect = -1;
+			hasChanged = true;
+		}
+	}
+
+	int	tmp = -1;
+	for (int i = 0; i < selectionMenu.getNumElements(); i++)
+	{
+		if (selectionMenu.getElementState(i))
+		{
+			tmp = i;
+		}
+	}
+	if (tmp != activeSelect && activeSelect != -1)
+	{
+		selectionMenu.setElementState(activeSelect, false);
+	}
+	activeSelect = tmp;
+	
 }
 //-----------------------------------------------------------------
 //-----------------------------------------------------------------

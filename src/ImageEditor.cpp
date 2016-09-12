@@ -31,6 +31,8 @@ void ImageEditor::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int w
 	imageButton.setup(this->style, this->font, this->fontColor, "Source Image", this->width, this->height);
 	imageButton.setEventEnabled(true);
 
+	
+
 	layerControlMenu.setup(this->style, this->font, this->fontColor, "", this->height, 1);
 	layerControlMenu.addGuiButton("Delete", this->width, this->height);
 	layerControlMenu.addGuiButton("Albido", this->width, this->height);
@@ -50,6 +52,8 @@ void ImageEditor::setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int w
 	filterSelection.addGuiButton("Normalmap", this->width, this->height);
 	filterSelection.addGuiButton("Threshold", this->width, this->height);
 	filterSelection.addGuiButton("Morphology", this->width, this->height);
+	filterSelection.addGuiButton("Highpass", this->width, this->height);
+	filterSelection.addGuiButton("Blend", this->width, this->height);
 	filterSelection.setEventEnabled(true);
 
 	activeLayer = -1;
@@ -69,37 +73,77 @@ void ImageEditor::update()
 		else
 		if (layerControlMenu.getElementState(1))
 		{
-			cout << "diffuse" << endl;
 			tAlbido = layer[activeModLayer]->getImage()->getTexture();
 			layerControlMenu.setElementState(1, false);
 			layerControl.setElementState(activeModLayer, false);
+
+			for (int i = 0; i < layerControl.getNumElements(); i++)
+			{
+				string label = layerControl.getElementLabel(i);
+				if (label == "a")
+				{
+					layerControl.setElementLabel(i, "");
+				}
+			}
+			layerControl.setElementLabel(activeModLayer, "a");
+
 			activeModLayer = -1;
 		}
 		else
 		if (layerControlMenu.getElementState(2))
 		{
-			cout << "normal" << endl;
 			tNormal = layer[activeModLayer]->getImage()->getTexture();
 			layerControlMenu.setElementState(2, false);
 			layerControl.setElementState(activeModLayer, false);
+
+			for (int i = 0; i < layerControl.getNumElements(); i++)
+			{
+				string label = layerControl.getElementLabel(i);
+				if (label == "n")
+				{
+					layerControl.setElementLabel(i, "");
+				}
+			}
+			layerControl.setElementLabel(activeModLayer, "n");
+
 			activeModLayer = -1;
 		}
 		else
 		if (layerControlMenu.getElementState(3))
 		{
-			cout << "specular" << endl;
 			tSpecular = layer[activeModLayer]->getImage()->getTexture();
 			layerControlMenu.setElementState(3, false);
 			layerControl.setElementState(activeModLayer, false);
+
+			for (int i = 0; i < layerControl.getNumElements(); i++)
+			{
+				string label = layerControl.getElementLabel(i);
+				if (label == "s")
+				{
+					layerControl.setElementLabel(i, "");
+				}
+			}
+			layerControl.setElementLabel(activeModLayer, "s");
+
 			activeModLayer = -1;
 		}
 		else
 		if (layerControlMenu.getElementState(4))
 		{
-			cout << "height" << endl;
 			tHeight = layer[activeModLayer]->getImage()->getTexture();
 			layerControlMenu.setElementState(4, false);
 			layerControl.setElementState(activeModLayer, false);
+
+			for (int i = 0; i < layerControl.getNumElements(); i++) 
+			{
+				string label = layerControl.getElementLabel(i);
+				if (label == "h")
+				{
+					layerControl.setElementLabel(i,"");
+				}
+			}
+			layerControl.setElementLabel(activeModLayer, "h");
+
 			activeModLayer = -1;
 		}
 	}
@@ -107,6 +151,11 @@ void ImageEditor::update()
 
 	if(activeLayer != -1)
 		layer[activeLayer]->apply();
+
+	for (int i = activeLayer-1; i >= 0; i--) 
+	{
+		layer[i]->doUpdate();
+	}
 
 	setActiveLayer();
 	setActiveModLayer();
@@ -123,6 +172,8 @@ void ImageEditor::draw(bool drawTexture)
 		{
 			layer[activeLayer]->drawPixels(ofGetWindowWidth()/2-512, ofGetWindowHeight()/2-512, 1024, 1024);
 			layer[activeLayer]->drawMenu(0, 24);
+			ofVec2f pos = layerControl.getElementPosition(activeLayer);
+			layer[activeLayer]->drawSelector(pos.x - layerControl.getSize().x, pos.y + height-1);
 		}
 	}
 	if (activeLayer != -1)
@@ -177,7 +228,6 @@ void ImageEditor::deleteLayer()
 
 	activeModLayer = -1;
 
-	++activeLayer;
 
 	if (activeLayer > layer.size() - 1) {
 		activeLayer = layer.size() - 1;
@@ -244,7 +294,18 @@ void ImageEditor::createLayer(int filterToCreate)
 		newFilter = new Morph();
 		newFilter->setup(this->style, this->font, this->fontColor, this->width, this->height);
 	}
-
+	else if (filterToCreate == 10)
+	{
+		newFilter = new Highpass();
+		newFilter->setup(this->style, this->font, this->fontColor, this->width, this->height);
+	}
+	else if (filterToCreate == 11)
+	{
+		newFilter = new Blends();
+		newFilter->setup(this->style, this->font, this->fontColor, this->width, this->height);
+		newFilter->setReferencesPossibilities(layer);
+		activeLayer = 0;
+	}
 	if(newFilter != nullptr)
 		addToVector(*newFilter, filterSelection.getElementLabel(filterToCreate));
 
@@ -260,8 +321,12 @@ void ImageEditor::addToVector(FilterModule& filter, string label)
 	tA.h = LEFT;
 	tA.v = vCENTER;
 
+	TextAlignment	alignment;
+	alignment.h = hCENTER;
+	alignment.v = vCENTER;
+
 	int posS = layerSelection.addGuiButton(label, this->width - this->height - 1, this->height, tA, true, activeLayer);
-	int posC = layerControl.addGuiButton("", this->height, this->height, tA, false, activeLayer);
+	int posC = layerControl.addGuiButton("", this->height, this->height, alignment, false, activeLayer);
 
 	if (activeLayer > -1 && activeLayer < layer.size())
 		layer[activeLayer]->disable();

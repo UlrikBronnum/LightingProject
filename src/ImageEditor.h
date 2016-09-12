@@ -16,9 +16,15 @@ public:
 	virtual void draw(bool drawTexture);
 
 	
-	void setBaseImage(ofImage& image) { base = image; tAlbido = base.getTexture(); }
+	void setBaseImage(ofImage& image) { base = image;  }
 
-	ofTexture* getAlbido() { return &tAlbido; }
+	ofTexture* getAlbido()
+	{
+		if (!tAlbido.isAllocated()) {
+			tAlbido = base.getTexture();
+		}
+		return &tAlbido;
+	}
 	ofTexture* getNormal() { return &tNormal; }
 	ofTexture* getSpecular() { return &tSpecular; }
 	ofTexture* getHeight() { return &tHeight; }

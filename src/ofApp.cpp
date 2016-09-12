@@ -7,15 +7,25 @@ void ofApp::setup(){
 
 	ofDisableArbTex();
 
+	text.setup("res/fonts/MicroExtendFLF-Bold.ttf", 12);
+	style.setup(ofVec4f(0.3, 0.3, 0.3, 1.0), ofVec4f(0, 0, 1.0, -1.0), SLOPED);
+
 	diffuse.load("res/textures/diffuse.jpg");
 	diffuse.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 	diffuse.getTexture().enableMipmap();
 	diffuse.getTexture().generateMipmap();
-	diffuse.resize(512, 512);
+	//diffuse.resize(512, 512);
+
+	setupSaveGui();
+	saveState = -1;
+
+	ps.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), 256, 24);
+	ps.disable();
 
 
-	text.setup("res/fonts/MicroExtendFLF-Bold.ttf", 12);
-	style.setup(ofVec4f(0.3, 0.3, 0.3, 1.0), ofVec4f(0, 0, 1.0, -1.0), SLOPED);
+	editor.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), 256, 36);
+	editor.setBaseImage(diffuse);
+
 
 	menu.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), "", 256, 1);
 	menu.addGuiButton(save, "Save", 256, 24);
@@ -34,10 +44,6 @@ void ofApp::setup(){
 	textureEditor.setState(true);
 	mainState = 1;
 
-	ps.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), 256, 24);
-
-	editor.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), 256, 36);
-	editor.setBaseImage(diffuse);
 }
 
 //--------------------------------------------------------------
@@ -48,6 +54,9 @@ void ofApp::update()
 		textureEditor.setState(false);
 		preview3d.setState(false);
 		mainState = 0;
+
+		ps.disable();
+		saveMenu.setEventEnabled(true);
 	}
 	else
 	if (textureEditor.getState() && mainState != 1)
@@ -55,6 +64,9 @@ void ofApp::update()
 		save.setState(false);
 		preview3d.setState(false);
 		mainState = 1;
+
+		ps.disable();
+		saveMenu.setEventEnabled(false);
 	}
 	else
 	if (preview3d.getState() && mainState != 2)
@@ -62,16 +74,26 @@ void ofApp::update()
 		save.setState(false);
 		textureEditor.setState(false);
 		mainState = 2;
+
+		ps.enable();
+		saveMenu.setEventEnabled(false);
 	}
 
-	if (mainState == 2)
+	if (mainState == 0)
 	{
-		ps.update();
+		updateSaveGui();
 	}
+	else if(mainState != 0)
+	{
+		editor.update();
+		if (mainState == 2)
+		{
+			ps.update();
+		}
+	}	
 	
 
-
-	editor.update();
+	
 
 
 
@@ -130,12 +152,173 @@ void ofApp::draw()
 		ofTexture s = *editor.getSpecular();
 		ofTexture h = *editor.getHeight();
 
-		if(a.isAllocated() && n.isAllocated() && s.isAllocated() && h.isAllocated())
-			ps.draw(a,n,s,h);
+		if (!a.isAllocated())
+			cout << "albido not allocated!" << endl;
+		if (!n.isAllocated())
+			cout << "normal not allocated!" << endl;
+		if (!s.isAllocated())
+			cout << "specular not allocated!" << endl;
+		if (!h.isAllocated())
+			cout << "height not allocated!" << endl;
 
+		if (a.isAllocated() &&
+			n.isAllocated() &&
+			s.isAllocated() &&
+			h.isAllocated())
+		{
+			ps.draw(a,n,s,h);
+		}
 		ps.drawControls(0, 256);
 	}
+	else if (mainState == 0)
+	{
+		saveMenu.draw(ofGetWindowWidth() / 2.0 - saveMenu.getSize().x / 2.0, ofGetWindowHeight() / 2.0 - saveMenu.getSize().y / 2.0);
+	}
 	menu.draw(0, 0);
+}
+void ofApp::setupSaveGui()
+{
+	saveMenu.setup(&style, text, ofVec4f(1.0, 1.0, 1.0, 1.0), "Save Menu", 512, 32);
+	saveMenu.setElementPadding(2);
+	saveMenu.setTextAlignment(hCENTER, vCENTER);
+	saveMenu.addGuiInput(filenameInput, "Filename", 446, 64);
+	saveMenu.addGuiButton(saveButton, "Save", 64, 64);
+
+	saveMenu.addGuiButton(jpgButton, "jpg", 506.0 / 4.0f, 64);
+	saveMenu.addGuiButton(pngButton, "png", 506.0 / 4.0f, 64);
+	saveMenu.addGuiButton(tiffButton, "tiff", 506.0 / 4.0f, 64);
+	saveMenu.addGuiButton(tgaButton, "targa", 506.0 / 4.0f, 64);
+
+
+	//-------------------Set element positions----------------------
+	saveMenu.setElementPosition(0, 0, 0);
+	saveMenu.setElementPosition(448, 0, 1);
+
+	saveMenu.setElementPosition(0, 66, 2);
+	saveMenu.setElementPosition(512.0 / 4.0f, 66, 3);
+	saveMenu.setElementPosition(512.0 / 4.0f * 2+1, 66, 4);
+	saveMenu.setElementPosition(512.0 / 4.0f * 3+1, 66, 5);
+
+	jpgButton.setState(true);
+
+	saveMenu.setEventEnabled(true);
+}
+void ofApp::updateSaveGui() 
+{
+
+	if (saveButton.getState())
+	{
+		string path = filenameInput.getValue();
+		string filePath = "";
+
+		size_t found = path.find_last_of(".");
+
+
+		if (found < path.size())
+		{
+			string fileExtention = path.substr(found);
+			cout << fileExtention << endl;
+			if (fileExtention == ".jpg" ||
+				fileExtention == ".JPG")
+			{
+				jpgButton.setState(true);
+				pngButton.setState(false);
+				tiffButton.setState(false);
+				tgaButton.setState(false);
+				saveState = 0;
+				extention = "JPG";
+			}
+			else if (fileExtention == ".png")
+			{
+				jpgButton.setState(false);
+				pngButton.setState(true);
+				tiffButton.setState(false);
+				tgaButton.setState(false);
+				saveState = 1;
+				extention = "png";
+			}
+			else if (fileExtention == ".tiff")
+			{
+				jpgButton.setState(false);
+				pngButton.setState(false);
+				tiffButton.setState(true);
+				tgaButton.setState(false);
+				saveState = 2;
+				extention = "tiff";
+			}
+			else if (fileExtention == ".tga")
+			{
+				jpgButton.setState(false);
+				pngButton.setState(false);
+				tiffButton.setState(false);
+				tgaButton.setState(true);
+				saveState = 3;
+				extention = "tga";
+			}
+			else
+			{
+				filePath = path.substr(0, found);
+			}
+		}
+		else {
+			filePath = path;
+		}
+		ofPixels pAlbido;
+		editor.getAlbido()->readToPixels(pAlbido);
+		ofSaveImage(pAlbido,filePath + "Albido." + extention);
+
+		ofPixels pNormal;
+		editor.getNormal()->readToPixels(pNormal);
+		ofSaveImage(pNormal, filePath + "Normal." + extention);
+
+		ofPixels pSpecular;
+		editor.getSpecular()->readToPixels(pSpecular);
+		ofSaveImage(pSpecular, filePath + "Specular." + extention);
+
+		ofPixels pHeight;
+		editor.getHeight()->readToPixels(pHeight);
+		ofSaveImage(pHeight, filePath + "Height." + extention);
+
+		cout << filePath << endl;
+		saveButton.setState(false);
+	}
+
+	if (saveState != 0 && jpgButton.getState())
+	{
+		pngButton.setState(false);
+		tiffButton.setState(false);
+		tgaButton.setState(false);
+
+		saveState = 0;
+		extention = "JPG";
+	}
+	else if (saveState != 1 && pngButton.getState())
+	{
+		jpgButton.setState(false);
+		tiffButton.setState(false);
+		tgaButton.setState(false);
+
+		saveState = 1;
+		extention = "png";
+	}
+	else if (saveState != 2 && tiffButton.getState())
+	{
+		jpgButton.setState(false);
+		pngButton.setState(false);
+		tgaButton.setState(false);
+
+		saveState = 2;
+		extention = "tiff";
+	}
+	else if (saveState != 3 && tgaButton.getState())
+	{
+		jpgButton.setState(false);
+		pngButton.setState(false);
+		tiffButton.setState(false);
+
+		saveState = 3;
+		extention = "tga";
+	}
 }
 //--------------------------------------------------------------
 void ofApp::filterHeightmap()
@@ -163,10 +346,13 @@ void ofApp::filterHeightmap()
 void ofApp::keyPressed(int key){
 	if (key == 13)
 		ps.reloadLightShader();
+
+
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+
 
 }
 
@@ -174,6 +360,7 @@ void ofApp::keyReleased(int key){
 void ofApp::mouseMoved(int x, int y )
 {
 	ps.mouseMoved(x, y);
+
 }
 
 //--------------------------------------------------------------
@@ -184,12 +371,12 @@ void ofApp::mouseDragged(int x, int y, int button)
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+	
 }
 
 //--------------------------------------------------------------
@@ -218,7 +405,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 	diffuse.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 	diffuse.getTexture().enableMipmap();
 	diffuse.getTexture().generateMipmap();
-	diffuse.resize(1024, 1024);
+	//diffuse.resize(1024, 1024);
 
 	editor.setBaseImage(diffuse);
 

@@ -30,7 +30,7 @@ out vec4                outputColor;
 vec3 calculateLight(vec4 lightPosition, vec3 lightDiffuseColor, vec3 lightSpecularColor)
 {
     vec3 texelColor         = texture(diffuseTexture,varyingTexcoord * tiling.xy + tiling.zw).rgb;
-    float texelSpec         = texture(specularTexture,varyingTexcoord * tiling.xy + tiling.zw).r;
+    vec3 texelSpec          = texture(specularTexture,varyingTexcoord * tiling.xy + tiling.zw).rgb;
     vec3 texelNormal        = normalize(tbnMat * (255.0/128.0 * texture(normalTexture,varyingTexcoord * tiling.xy + tiling.zw).xyz - vec3(1.0) ).rgb);
 
     vec3 diffuseLight;

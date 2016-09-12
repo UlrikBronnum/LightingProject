@@ -15,10 +15,14 @@ public:
 	virtual void apply() {};
 
 	virtual void setReference(ofImage& base) ;
-	virtual void setReference(ofTexture& base) ;
+	virtual void setReference(ofTexture& base);
+
+
+	virtual void setReferencesPossibilities(vector<FilterModule*> references){}
 
 	virtual void drawPixels(int x, int y, int w, int h);
 	virtual void drawMenu(int x, int y);
+	virtual void drawSelector(int x, int y){}
 
 	virtual ofImage* getImage() { return &image; };
 
@@ -26,6 +30,8 @@ public:
 
 	virtual void enable() { inputGui.enableEvents(); }
 	virtual void disable() { inputGui.disableEvents(); }
+
+	void	doUpdate() { hasChanged = true; }
 
 protected:
 
@@ -48,6 +54,8 @@ public:
 	virtual void drawPixels(int x, int y, int w, int h) override;
 
 	ofImage* getImage() override;
+
+	void setTextureSettings();
 
 protected:
 
@@ -109,7 +117,23 @@ protected:
 
 	int			radiusValue;
 
-	Kernel	  kernel;
+	bool		doMax;
+
+	Kernel		kernel;
+};
+class Highpass : public FilterModuleGPU
+{
+public:
+
+	void setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, int height) override;
+	void apply() override;
+
+protected:
+
+	GuiInt		gRadius;
+
+	int			vRadius;
+
 };
 class Morph : public FilterModuleGPU
 {
@@ -136,7 +160,7 @@ protected:
 	int			kernelSum;
 
 	int			radiusValue;
-	
+	bool		doADilation;
 
 	Kernel	  kernel;
 };
@@ -182,6 +206,7 @@ protected:
 	GuiButton	absolute;
 	GuiInt		thresholdValue;
 
+	float		thresholdSum;
 	int			outputState;
 };
 
@@ -202,6 +227,7 @@ protected:
 	GuiButton	scharr;
 	GuiFloat	roughness;
 
+	float		vRoughness;
 	int			kernelState;
 };
 class Gamma : public FilterModuleGPU
@@ -214,6 +240,8 @@ public:
 protected:
 
 	GuiFloat	gamma;
+
+	float		gammaValue;
 	
 };
 class BrightnessContrast : public FilterModuleGPU
@@ -227,6 +255,9 @@ protected:
 
 	GuiInt	brightness;
 	GuiInt	contrast;
+
+	int		brightnessValue;
+	int		contrastValue;
 
 };
 
@@ -277,7 +308,78 @@ protected:
 	GuiFloat	saturation;
 	GuiFloat	luminance;
 
+	float		hueValue;
+	float		saturationValue;
+	float		luminaceValue;
+
 };
+
+class Blends : public FilterModuleGPU
+{
+public:
+
+	~Blends() {
+		references.clear();
+	}
+	void setup(GuiStyle* style, GuiFont& font, ofVec4f fontColor, int width, int height) override;
+	void apply() override;
+
+	virtual void drawSelector(int x, int y) override;
+
+	virtual void setReferencesPossibilities(vector<FilterModule*> references) override;
+	
+	
+	
+
+	virtual void enable() override { 
+		inputGui.enableEvents();
+		selectionMenu.enableEvents();
+		textureSelect.enableEvents();
+	}
+	virtual void disable() override { 
+		inputGui.disableEvents();
+		selectionMenu.disableEvents();
+		textureSelect.disableEvents();
+	}
+
+protected:
+
+	void updateSelectionMenu();
+	void setInput();
+
+	Gui				selectionMenu;
+	Gui				textureSelect;
+	GuiButton		gTarget;
+	GuiButton		gBlend;
+
+	vector<FilterModule*> references;
+
+	ofTexture		target;
+	ofTexture		blend;
+
+	int activeInput;
+	int activeSelect;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class FilterModuleCPU : public FilterModule
 {
 public:

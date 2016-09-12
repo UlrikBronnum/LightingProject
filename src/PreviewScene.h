@@ -31,6 +31,9 @@ public:
 	void mouseMoved(int x, int y);
 	void mouseDragged(int x, int y, int button);
 
+	void enable();
+	void disable();
+
 	void set3DModel();
 
 	void reloadLightShader() { pointLight.reloadShader(); }

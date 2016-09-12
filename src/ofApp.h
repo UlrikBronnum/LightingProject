@@ -35,7 +35,9 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		void filterHeightmap();
-
+		
+		void setupSaveGui();
+		void updateSaveGui();
 
 		ofImage			diffuse;
 
@@ -50,16 +52,20 @@ class ofApp : public ofBaseApp{
 		GuiBaseElement	fill;
 
 		int				mainState;
-/*		
 
-		// Filters
-		ofFbo			heightFbo;
-		ofFbo			normalFbo;
-		ofFbo			invertFbo;
-		ofFbo			edgeFbo;
-*/
 		PreviewScene	ps;
 
 	
 		ImageEditor		editor;
+
+		Gui				saveMenu;
+		GuiInput		filenameInput;
+		GuiButton		saveButton;
+		GuiButton		jpgButton;
+		GuiButton		pngButton;
+		GuiButton		tiffButton;
+		GuiButton		tgaButton;
+
+		int				saveState;
+		string			extention;
 };

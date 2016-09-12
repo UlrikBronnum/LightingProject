@@ -242,6 +242,8 @@ public:
 
 	static void highpass	(ofTexture& base, ofFbo& out_fbo, int fboWidth, int fboHeight, int radius);
 
+	static void blends		(ofTexture& target, ofTexture& blend, ofFbo& out_fbo, int fboWidth, int fboHeight, int blendMode);
+
 };
 
 //------------------------------------------------------------------------

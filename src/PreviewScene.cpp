@@ -254,18 +254,24 @@ void PreviewScene::lightMenu(GuiStyle* style, GuiFont& font, ofVec4f fontColor, 
 	
 	lightControls.addGuiFloat(lightColorRed, "Red", 256, 24, 0.0, 1.0, 0.01);
 	lightColorRed.setSliderStyle(ofVec4f(1.0, 0.0, 0.0, 1.0), ofVec4f(0.0, 1.0, 0, 0), SLOPED);
+	lightColorRed.setValue(1.0);
 	lightControls.addGuiFloat(lightColorGreen, "Green", 256, 24, 0.0, 1.0, 0.01);
 	lightColorGreen.setSliderStyle(ofVec4f(0.0, 1.0, 0.0, 1.0), ofVec4f(0.0, 1.0, 0, 0), SLOPED);
+	lightColorGreen.setValue(1.0);
 	lightControls.addGuiFloat(lightColorBlue, "Blue", 256, 24, 0.0, 1.0, 0.01);
 	lightColorBlue.setSliderStyle(ofVec4f(0.0, 0.0, 1.0, 1.0), ofVec4f(0.0, 1.0, 0, 0), SLOPED);
+	lightColorBlue.setValue(1.0);
+
 
 
 	lightControls.addGuiFloat(lightAttenuationConst, "Constant Atten", 256, 24, 0.0, 2.0, 0.01);
 	lightControls.addGuiFloat(lightAttenuationLinear, "Linear Atten", 256, 24, 0.0, 2.0, 0.01);
+	lightAttenuationLinear.setValue(1.0);
 	lightControls.addGuiFloat(lightAttenuationQuadratic, "Quadratic Atten", 256, 24, 0.0, 2.0, 0.01);
 
 	lightControls.addGuiFloat(lightColorIntencity, "Intencity", 256, 24, 0.0, 10.0, 0.01);
-	
+	lightColorIntencity.setValue(1.0);
+
 	lightControls.setElementPosition(0, 0, 0);
 	lightControls.setElementPosition(0, height + 1, 1);
 	lightControls.setElementPosition(0, height * 2 + 1 * 2, 2);
@@ -311,7 +317,8 @@ void PreviewScene::reloadMesh()
 		}
 		else {
 			mesh.createMesh(ofMesh::box(500, 500, 500));
-		}
+		}
+
 
 		//mesh.createMesh(ofMesh::box(500, 500, 500));
 		mesh.loadAttributes(shader);
@@ -370,4 +377,15 @@ void PreviewScene::reloadShader()
 	else {
 		shader.load("res/shaders/normalmapLighting.vert", "res/shaders/normalmapLighting.frag");
 	}
+}
+
+void PreviewScene::enable()
+{
+	lightControls.setEventEnabled(true);
+	meshControls.setEventEnabled(true);
+}
+void PreviewScene::disable()
+{
+	lightControls.setEventEnabled(false);
+	meshControls.setEventEnabled(false);
 }

@@ -58,6 +58,7 @@ void main()
 
     float blend     = (heightValue - modifier4 * pow( strength, 2.2 ))/(1.0-intensity) ; //0.65 / (modifier1 * 0.33 + modifier2 * 0.33 + modifier3 * 0.33) * pow( strength, 2.2 )
 */
-    outputColor = vec4( vec3(baseValue*(heightValue2/heightValue1)*modValue+neighborhoodHeight) , 1.0);
+    //outputColor = vec4( vec3(baseValue*(heightValue2/heightValue1)*modValue+neighborhoodHeight) , 1.0);
     //outputColor = vec4( vec3( pixelValue ) , 1.0);
+    outputColor = vec4( texelBase / (1.0 - texelInvert) , 1.0);
 }

@@ -61,7 +61,7 @@ bool Gui::mouseMoved(ofMouseEventArgs & args)
 {
 	bool result = GuiBaseElement::mouseMoved(args);
 
-	if(isPointInsideElement(args.x, args.y, fbo.getWidth(), fbo.getHeight() ) )
+	//if(isPointInsideElement(args.x, args.y, fbo.getWidth(), fbo.getHeight() ) )
 		for (int i = 0; i < elements.size(); i++)
 		{
 			elements[i]->mouseMoved(args);
@@ -119,7 +119,14 @@ bool Gui::keyPressed(ofKeyEventArgs & args)
 {
 	for (int i = 0; i < elements.size(); i++)
 	{
-		elements[i]->keyPressed(args);
+		try{
+			elements[i]->keyPressed(args);
+			throw std::exception();
+		}
+		catch (exception& e)
+		{
+			cerr << "Error in keypress gui: " << e.what() << endl;
+		}
 	}
 	return false;
 }
@@ -1083,11 +1090,13 @@ void GuiInteractiveElement::registerKeyEvent()
 {
 	ofAddListener(ofEvents().keyPressed, this, &GuiInteractiveElement::keyPressed);
 	ofAddListener(ofEvents().keyReleased, this, &GuiInteractiveElement::keyReleased);
+	keyEnable = true;
 }
 void GuiInteractiveElement::unregisterKeyEvent()
 {
 	ofRemoveListener(ofEvents().keyPressed, this, &GuiInteractiveElement::keyPressed);
 	ofRemoveListener(ofEvents().keyReleased, this, &GuiInteractiveElement::keyReleased);
+	keyEnable = false;
 }
 
 //------------------------------------------------------------------------
@@ -1388,7 +1397,8 @@ template<typename Type>
 void GuiSlider<Type>::setValue(Type newValue)
 {
 	float total = (float)max - (float)min;
-	float pos = ((float)max - newValue) / total;
+	//float pos = ((float)max - newValue) / total;
+	float pos = abs(newValue - (float)min) / total;
 	setDragProcentage(pos, pos);
 }
 template class GuiSlider<int>;
@@ -1484,31 +1494,37 @@ void GuiInput::draw(int x, int y)
 }
 bool GuiInput::keyPressed(int key)
 {
-	if (this->state) 
+	try
 	{
-		if (key >= 0 && key < 256) {
-			try
-			{
-				char inputKey = (char)key;
-				if (inputKey >= 32 && inputKey < 125) {
-					value += inputKey;
-					markerPosition++;
-					return false;
-				}
-				else if (inputKey == 8) {
-					if (!value.empty()) {
-						value.erase(value.end() - 1);
+		if (this->state)
+		{
+			if (key >= 0 && key < 256) {
+				try
+				{
+					char inputKey = (char)key;
+					if (inputKey >= 32 && inputKey < 125) {
+						value += inputKey;
+						markerPosition++;
+						throw std::exception();
 					}
-					return false;
+					else if (inputKey == 8) {
+						if (!value.empty()) {
+							value.erase(value.end() - 1);
+						}
+						throw std::exception();
+					}
+					throw std::exception();
 				}
-
-				throw std::exception();
-			}
-			catch (exception& e)
-			{
-				cerr << "Error: " << e.what() << endl;
+				catch (exception& e)
+				{
+					cerr << "Error: " << e.what() << endl;
+				}
 			}
 		}
+	}
+	catch (exception& e)
+	{
+		cerr << "Error in keypress: " << e.what() << endl;
 	}
 	return false;
 }
@@ -1519,8 +1535,7 @@ bool GuiInput::keyReleased(int key)
 }
 
 bool GuiInput::keyPressed(ofKeyEventArgs & args)
-{
-	return keyPressed(args.key);
+{	return keyPressed(args.key);
 }
 bool GuiInput::keyReleased(ofKeyEventArgs & args)
 {
